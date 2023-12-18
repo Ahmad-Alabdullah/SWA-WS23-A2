@@ -5,7 +5,7 @@ import {
   } from '@mui/material';
   import Link from 'next/link';
   
-  function Home() {
+  function Search() {
     return (
       <Container>
         <Typography variant="h1" component="h2" gutterBottom>
@@ -23,4 +23,4 @@ import {
     );
   }
   
-  export default Home;
+  export default Search;

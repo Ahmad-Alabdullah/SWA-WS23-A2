@@ -121,7 +121,7 @@ export default function Nav() {
       <AppBar
         position="fixed"
         open={open}
-        style={{ backgroundColor: '#DC143C' }}
+        style={{ backgroundColor: '#047857' }}
       >
         <Toolbar>
           <IconButton

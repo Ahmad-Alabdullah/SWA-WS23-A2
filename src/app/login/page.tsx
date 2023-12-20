@@ -98,7 +98,7 @@ function LoggedOut() {
           type="submit"
           fullWidth
           variant="contained"
-          style={{ backgroundColor: '#DC143C' }}
+          style={{ backgroundColor: '#047857' }}
         >
           Anmelden
         </Button>

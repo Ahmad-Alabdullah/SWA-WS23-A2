@@ -119,13 +119,12 @@ function LoggedIn() {
 
   return (
     <LoginForm onSubmit={handleSubmit}>
-      <h2>Angemeldet</h2>
-      <h4>als User &apos;{username}&apos;</h4>
+      <h2>Angemeldet als &apos;{username}&apos;</h2>
       <Button
         fullWidth
         type="submit"
         variant="contained"
-        style={{ backgroundColor: '#DC143C' }}
+        style={{ backgroundColor: '#047857' }}
       >
         Abmelden
       </Button>

@@ -4,6 +4,7 @@ import './globals.css';
 import Nav from '@/components/Nav';
 import { Outlet } from 'react-router-dom';
 import LoginContext, { LoginProvider } from '@/context/LoginProvider';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,10 +21,12 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body>
-        <LoginProvider>
-          <Nav></Nav>
-          <div>{children}</div>
-        </LoginProvider>
+        <AppRouterCacheProvider>
+          <LoginProvider>
+            <Nav></Nav>
+            <div>{children}</div>
+          </LoginProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

@@ -81,9 +81,9 @@ import {
                     name="row-radio-buttons-group"
                     style={{ justifyContent: 'space-between', width: '100%', marginBottom: '10px' }}
                   >
-                    <FormControlLabel value="nach Titel" control={<Radio />} label="nach Titel" style={{ paddingRight: '40px' }} />
-                    <FormControlLabel value="nach Author" control={<Radio />} label="nach Author" style={{ paddingRight: '40px' }} />
-                    <FormControlLabel value="nach ISBN" control={<Radio />} label="nach ISBN" style={{ paddingRight: '40px' }} />
+                    <FormControlLabel value="nach Titel" control={<Radio color="success" />} label="nach Titel" style={{ paddingRight: '40px' }} />
+                    <FormControlLabel value="nach Author" control={<Radio color="success" />} label="nach Author" style={{ paddingRight: '40px' }} />
+                    <FormControlLabel value="nach ISBN" control={<Radio color="success" />} label="nach ISBN" style={{ paddingRight: '40px' }} />
                   </RadioGroup>
                 </FormControl>
                 <Button

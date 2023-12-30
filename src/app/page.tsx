@@ -17,7 +17,7 @@ import {
   
   function Home() {
     return (
-      <Box sx={{ flexGrow: 1, padding: '2rem' }}>
+      <Box sx={{ flexGrow: 1, padding: '2rem', textAlign: 'center' }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Card>
@@ -29,7 +29,7 @@ import {
                   objectFit: 'cover',
                   maxHeight: '40vh',
                 }}
-                image="\public\images\library.jpg"
+                image="/library.jpg"
                 alt="Cover Image"
               />
               <Typography variant="h5" className="title" sx={{ width: '60%', margin: 'auto', marginBottom: '1rem', alignItems: 'center', justifyContent: 'center' }}>
@@ -58,7 +58,7 @@ import {
                     row
                     aria-labelledby="row-radio-buttons-group-label"
                     name="row-radio-buttons-group"
-                    style={{ justifyContent: 'space-between', width: '100%', marginBottom: '40px' }}
+                    style={{ justifyContent: 'space-between', width: '100%', marginBottom: '10px' }}
                   >
                     <FormControlLabel value="nach Titel" control={<Radio />} label="nach Titel" style={{ paddingRight: '40px' }} />
                     <FormControlLabel value="nach Author" control={<Radio />} label="nach Author" style={{ paddingRight: '40px' }} />

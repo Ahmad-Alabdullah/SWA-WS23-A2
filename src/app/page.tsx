@@ -17,26 +17,47 @@ import {
   
   function Home() {
     return (
-      <Box sx={{ flexGrow: 1, padding: '2rem', textAlign: 'center' }}>
+      <Box sx={{ 
+        flexGrow: 1, 
+        padding: '2rem', 
+        textAlign: 'center', 
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        color: 'white',
+      }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Card>
-              <CardMedia
-                component="img"
-                sx={{
-                  width: '100%',
-                  height: '400px',
-                  objectFit: 'cover',
-                  maxHeight: '40vh',
-                }}
-                image="/library.jpg"
-                alt="Cover Image"
-              />
-              <Typography variant="h5" className="title" sx={{ width: '60%', margin: 'auto', marginBottom: '1rem', alignItems: 'center', justifyContent: 'center' }}>
-              Willkommen in unserem online Buchhandel!
-              </Typography>
+              <Box sx={{ position: 'relative' }}>
+                <CardMedia
+                  component="img"
+                  sx={{
+                    width: '100%',
+                    height: '400px',
+                    objectFit: 'cover',
+                    maxHeight: '50vh',
+                  }}
+                  image="/library.jpg"
+                  alt="Cover Image"
+                />
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    width: '100%',
+                    bgcolor: 'rgba(255, 255, 255, 0.54)',
+                    color: 'black',
+                    padding: '10px',
+                  }}
+                >
+                  <Typography variant="h5">Willkommen in unserem online Buchhandel!</Typography>
+                </Box>
+              </Box>
             </Card>
-        </Grid>
+          </Grid>
 
           <Grid item xs={6}>
             <Card>

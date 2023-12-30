@@ -1,5 +1,7 @@
+'use client';
+
+import Cookie from '@/auth/cookie';
 import { createContext, useEffect, useState } from 'react';
-import Cookie from '../api/cookie';
 
 // defaultValue wird hier gesondert erzeugt, um ihm explizit den Typ 'any' geben zu können.
 // Damit werden in den nutzenden Komponenten keine verwirrenden TS-Fehler mehr angezeigt.

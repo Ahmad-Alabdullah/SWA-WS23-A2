@@ -1,3 +1,5 @@
+'use client';
+
 import { CSSObject, Theme, styled, useTheme } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { useContext, useState } from 'react';
@@ -11,7 +13,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import HomeIcon from '@mui/icons-material/Home';
 import IconButton from '@mui/material/IconButton';
-import { Link } from 'react-router-dom';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -27,6 +28,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import Link from 'next/link';
 
 const drawerWidth = 240;
 
@@ -119,7 +121,7 @@ export default function Nav() {
       <AppBar
         position="fixed"
         open={open}
-        style={{ backgroundColor: '#DC143C' }}
+        style={{ backgroundColor: '#047857' }}
       >
         <Toolbar>
           <IconButton
@@ -159,177 +161,156 @@ export default function Nav() {
         </DrawerHeader>
         <Divider />
         <List>
-          <ListItem
-            key="Home"
-            disablePadding
-            sx={{ display: 'block' }}
-            component={Link}
-            to="/"
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+          <ListItem key="Home" disablePadding sx={{ display: 'block' }}>
+            <Link href="/">
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
                 }}
               >
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </Link>
           </ListItem>
-          <ListItem
-            key="Hinzufügen"
-            disablePadding
-            sx={{ display: 'block' }}
-            component={Link}
-            to="/create"
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+          <ListItem key="Hinzufügen" disablePadding sx={{ display: 'block' }}>
+            <Link href="/create">
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
                 }}
               >
-                <AddCircleOutlineIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Hinzufügen"
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <AddCircleOutlineIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Hinzufügen"
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </Link>
           </ListItem>
-          <ListItem
-            key="Suche"
-            disablePadding
-            sx={{ display: 'block' }}
-            component={Link}
-            to="/search"
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+          <ListItem key="Suche" disablePadding sx={{ display: 'block' }}>
+            <Link href="/search">
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
                 }}
               >
-                <SearchIcon />
-              </ListItemIcon>
-              <ListItemText primary="Suche" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <SearchIcon />
+                </ListItemIcon>
+                <ListItemText primary="Suche" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </Link>
           </ListItem>
         </List>
         <Divider />
         <List>
-          <ListItem
-            key="Diagramme"
-            disablePadding
-            sx={{ display: 'block' }}
-            component={Link}
-            to="/charts"
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+          <ListItem key="Diagramme" disablePadding sx={{ display: 'block' }}>
+            <Link href="/charts">
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
                 }}
               >
-                <StackedLineChartIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Diagramme"
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <StackedLineChartIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Diagramme"
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </Link>
           </ListItem>
         </List>
         <Divider />
         <List>
-          <ListItem
-            key="Login"
-            disablePadding
-            sx={{ display: 'block' }}
-            component={Link}
-            to="/login"
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+          <ListItem key="Login" disablePadding sx={{ display: 'block' }}>
+            <Link href="/login">
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
                 }}
               >
-                {isLoggedIn && <LogoutIcon />}
-                {!isLoggedIn && <LoginIcon />}
-              </ListItemIcon>
-              <ListItemText
-                primary={isLoggedIn ? 'Logout' : 'Login'}
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {isLoggedIn && <LogoutIcon />}
+                  {!isLoggedIn && <LoginIcon />}
+                </ListItemIcon>
+                <ListItemText
+                  primary={isLoggedIn ? 'Logout' : 'Login'}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </Link>
           </ListItem>
-          <ListItem
-            key="Über uns"
-            disablePadding
-            sx={{ display: 'block' }}
-            component={Link}
-            to="/about"
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+          <ListItem key="Über uns" disablePadding sx={{ display: 'block' }}>
+            <Link href="/about">
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
                 }}
               >
-                <PeopleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Über uns" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Über uns"
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </Link>
           </ListItem>
         </List>
       </Drawer>

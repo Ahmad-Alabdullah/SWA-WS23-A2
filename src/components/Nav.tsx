@@ -1,7 +1,6 @@
 'use client';
 
-import { CSSObject, Theme, styled, useTheme } from '@mui/material/styles';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import { useTheme } from '@mui/material/styles';
 import { useContext, useState } from 'react';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -22,84 +21,13 @@ import LoginContext from '../context/LoginProvider';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import MuiDrawer from '@mui/material/Drawer';
 import PeopleIcon from '@mui/icons-material/People';
 import SearchIcon from '@mui/icons-material/Search';
 import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
-
-const drawerWidth = 240;
-
-const openedMixin = (theme: Theme): CSSObject => ({
-  width: drawerWidth,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: 'hidden',
-});
-
-const closedMixin = (theme: Theme): CSSObject => ({
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
-
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: 'nowrap',
-  boxSizing: 'border-box',
-  ...(open && {
-    ...openedMixin(theme),
-    '& .MuiDrawer-paper': openedMixin(theme),
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    '& .MuiDrawer-paper': closedMixin(theme),
-  }),
-}));
+import { AppBar, Drawer, Header } from './Nav_Styles';
 
 export default function Nav() {
   const theme = useTheme();
@@ -114,6 +42,19 @@ export default function Nav() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const menuItems = [
+    { key: 'Home', icon: <HomeIcon />, href: '/' },
+    { key: 'Hinzufügen', icon: <AddCircleOutlineIcon />, href: '/create' },
+    { key: 'Suche', icon: <SearchIcon />, href: '/search' },
+    { key: 'Diagramme', icon: <StackedLineChartIcon />, href: '/charts' },
+    {
+      key: 'Login',
+      icon: isLoggedIn ? <LogoutIcon /> : <LoginIcon />,
+      href: '/login',
+    },
+    { key: 'Über uns', icon: <PeopleIcon />, href: '/about' },
+  ];
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -150,7 +91,7 @@ export default function Nav() {
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
+        <Header>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? (
               <ChevronRightIcon />
@@ -158,161 +99,35 @@ export default function Nav() {
               <ChevronLeftIcon />
             )}
           </IconButton>
-        </DrawerHeader>
+        </Header>
         <Divider />
         <List>
-          <ListItem key="Home" disablePadding sx={{ display: 'block' }}>
-            <Link href="/">
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+          {menuItems.map(({ key, icon, href }) => (
+            <ListItem key={key} disablePadding sx={{ display: 'block' }}>
+              <Link href={href}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
-                  <HomeIcon />
-                </ListItemIcon>
-                <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-          <ListItem key="Hinzufügen" disablePadding sx={{ display: 'block' }}>
-            <Link href="/create">
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <AddCircleOutlineIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Hinzufügen"
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-          <ListItem key="Suche" disablePadding sx={{ display: 'block' }}>
-            <Link href="/search">
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <SearchIcon />
-                </ListItemIcon>
-                <ListItemText primary="Suche" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {icon}
+                  </ListItemIcon>
+                  <ListItemText primary={key} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+          ))}
         </List>
         <Divider />
-        <List>
-          <ListItem key="Diagramme" disablePadding sx={{ display: 'block' }}>
-            <Link href="/charts">
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <StackedLineChartIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Diagramme"
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        </List>
-        <Divider />
-        <List>
-          <ListItem key="Login" disablePadding sx={{ display: 'block' }}>
-            <Link href="/login">
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {isLoggedIn && <LogoutIcon />}
-                  {!isLoggedIn && <LoginIcon />}
-                </ListItemIcon>
-                <ListItemText
-                  primary={isLoggedIn ? 'Logout' : 'Login'}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-          <ListItem key="Über uns" disablePadding sx={{ display: 'block' }}>
-            <Link href="/about">
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <PeopleIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Über uns"
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        </List>
       </Drawer>
     </Box>
   );

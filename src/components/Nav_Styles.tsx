@@ -19,6 +19,7 @@ const opened = (theme: Theme): CSSObject => ({
   width: drawerWidth,
   ...transition(theme, 'enteringScreen'),
   overflowX: 'hidden',
+  backgroundColor: '#047857',
 });
 
 const closed = (theme: Theme): CSSObject => ({
@@ -28,6 +29,7 @@ const closed = (theme: Theme): CSSObject => ({
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
+  backgroundColor: '#047857',
 });
 
 const Header = styled('div')(({ theme }) => ({
@@ -64,10 +66,12 @@ const Drawer = styled(MuiDrawer, {
   ...(open && {
     ...opened(theme),
     '& .MuiDrawer-paper': opened(theme),
+    backgroundColor: '#047857',
   }),
   ...(!open && {
     ...closed(theme),
     '& .MuiDrawer-paper': closed(theme),
+    backgroundColor: '#047857',
   }),
 }));
 

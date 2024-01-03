@@ -11,6 +11,7 @@ import {
   TextField,
   Radio,
   RadioGroup,
+  Rating,
   Typography,
 } from '@mui/material';
 import Link from 'next/link';
@@ -73,7 +74,9 @@ function Home() {
                 alignItems: 'center',
               }}
             >
-              <h3>Starte hier Deine Suche</h3>
+              <Typography variant="h6" fontWeight="bold">
+              Starte hier Deine Suche
+                </Typography>
               <TextField
                 variant="outlined"
                 fullWidth
@@ -82,7 +85,7 @@ function Home() {
                 name="Suchen"
                 type="text"
                 autoFocus
-                style={{ backgroundColor: '#E6F1EE', marginBottom: '10px' }}
+                style={{ backgroundColor: '#E6F1EE', marginBottom: '10px', marginTop: '15px' }}
               />
               <FormControl>
                 <FormLabel id="row-radio-buttons-group-label"></FormLabel>
@@ -136,11 +139,14 @@ function Home() {
                 justifyContent: 'center',
               }}
             >
-              <h3>Aktuell beliebteste Bücher</h3>
-              <Typography
-                sx={{ width: '60%', margin: 'auto', marginBottom: '1rem' }}
-              ></Typography>
-              <Link href="/search" passHref>
+              <Typography variant="h6"
+              style={{marginBottom: '30px'}}>
+                Aktuell beliebteste Bücher
+              </Typography>
+              <Rating name="size-large" value={5} size="large" 
+              style={{marginBottom: '35px'}}
+              />
+              <Link href="/top10" passHref>
                 <Button
                   variant="contained"
                   style={{ backgroundColor: '#047857' }}

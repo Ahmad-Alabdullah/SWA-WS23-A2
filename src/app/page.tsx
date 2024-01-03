@@ -24,9 +24,10 @@ function Home() {
         padding: '2rem',
         textAlign: 'center',
         position: 'absolute',
+        top: 50,
         bottom: 0,
-        left: 0,
-        width: '100%',
+        left: 50,
+        width: 'calc(100%-50)',
         color: 'white',
       }}
     >
@@ -139,7 +140,7 @@ function Home() {
                 justifyContent: 'center',
               }}
             >
-              <Typography variant="h6"
+              <Typography variant="h6" fontWeight="bold"
               style={{marginBottom: '30px'}}>
                 Aktuell beliebteste Bücher
               </Typography>

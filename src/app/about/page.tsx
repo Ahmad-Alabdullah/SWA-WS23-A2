@@ -22,7 +22,7 @@ const profiles: Profile[] = [
     imgPath: '/Elena.jpeg',
     imgAlt: 'Elena',
     name: 'Elena Badliuk',
-    jobDescription: 'UI/UX Designer'
+    jobDescription: 'UI/UX Designerin'
   },
   {
     index: 1,
@@ -48,7 +48,10 @@ export function About() {
     justifyContent="center"
     alignItems="center"
     >
-      <Grid item xs={12}>
+      <Grid item xs={12} container justifyContent="center" alignItems="center">
+      <Typography variant="h4" fontWeight="bold" marginBottom={3} >
+      Unser Team
+    </Typography>
         <Grid container justifyContent="center" alignItems="center" spacing={5}>
           {profiles.map((value) => (
             <Grid key={value.index} item>

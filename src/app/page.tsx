@@ -29,6 +29,7 @@ function Home() {
         left: 50,
         width: 'calc(100%-50)',
         color: 'white',
+        paddingLeft: '80px',
       }}
     >
       <Grid container spacing={2}>

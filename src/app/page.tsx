@@ -77,8 +77,8 @@ function Home() {
               }}
             >
               <Typography variant="h6" fontWeight="bold">
-              Starte hier Deine Suche
-                </Typography>
+                Starte hier Deine Suche
+              </Typography>
               <TextField
                 variant="outlined"
                 fullWidth
@@ -87,7 +87,11 @@ function Home() {
                 name="Suchen"
                 type="text"
                 autoFocus
-                style={{ backgroundColor: '#E6F1EE', marginBottom: '10px', marginTop: '15px' }}
+                style={{
+                  backgroundColor: '#E6F1EE',
+                  marginBottom: '10px',
+                  marginTop: '15px',
+                }}
               />
               <FormControl>
                 <FormLabel id="row-radio-buttons-group-label"></FormLabel>
@@ -141,12 +145,18 @@ function Home() {
                 justifyContent: 'center',
               }}
             >
-              <Typography variant="h6" fontWeight="bold"
-              style={{marginBottom: '30px'}}>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                style={{ marginBottom: '30px' }}
+              >
                 Aktuell beliebteste Bücher
               </Typography>
-              <Rating name="size-large" value={5} size="large" 
-              style={{marginBottom: '35px'}}
+              <Rating
+                name="size-large"
+                value={5}
+                size="large"
+                style={{ marginBottom: '35px' }}
               />
               <Link href="/top10" passHref>
                 <Button

@@ -96,19 +96,25 @@ export const buildQuery = (
         `;
     }
 
-    let filter = 'buecher';
+     let filter = 'buecher';
     if (queryFilter && queryFilter.length > 0) {
         let p = '';
         for (const index of queryFilter.keys()) {
-            const type = typeof queryFilter[index].value;
+            const { key, value } = queryFilter[index];
+            const valueType = typeof value;
 
-            switch (type) {
+            switch (valueType) {
                 case 'string':
-                    p += `${queryFilter[index].key}: "${queryFilter[index].value}"`;
-                    break;
+                    if(key === 'art'){
+                        p += `${key}: ${value}`;
+                        break;
+                    } else {
+                        p += `${key}: "${value}"`;
+                        break;
+                    }
                 case 'boolean':
                 case 'number':
-                    p += `${queryFilter[index].key}: ${queryFilter[index].value}`;
+                    p += `${key}: ${value}`;
                     break;
                 default:
                     break;
@@ -118,12 +124,8 @@ export const buildQuery = (
                 p += ', ';
             }
         }
-        filter = `buecher (${p})`;
+        filter = `buecher (filter: {${p}})`;
     }
 
-    return `{
-        ${filter} {
-            ${fields}
-        }
-    }`;
+    return `{${filter} {${fields}}}`;
 };

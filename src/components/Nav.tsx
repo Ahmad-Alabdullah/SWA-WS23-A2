@@ -43,7 +43,15 @@ export default function Nav() {
 
   const menuItems = [
     { key: 'Home', icon: <HomeIcon />, href: '/' },
-    { key: 'Hinzufügen', icon: <AddCircleOutlineIcon />, href: '/create' },
+    ...(isLoggedIn
+      ? [
+          {
+            key: 'Hinzufügen',
+            icon: <AddCircleOutlineIcon />,
+            href: '/create',
+          },
+        ]
+      : []),
     { key: 'Suche', icon: <SearchIcon />, href: '/search' },
     { key: 'Diagramme', icon: <StackedLineChartIcon />, href: '/charts' },
     { key: 'Über uns', icon: <PeopleIcon />, href: '/about' },

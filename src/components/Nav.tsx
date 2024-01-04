@@ -123,24 +123,41 @@ export default function Nav() {
             zIndex: theme.zIndex.drawer + 1,
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography sx={{ marginRight: 1 }}>
-              {isLoggedIn && `Hello, ${username}!`}
-            </Typography>
-            {isLoggedIn && (
-              <PersonIcon
+          <Box sx={{ display: 'flex', alignItems: 'right' }}>
+
+            <Button
                 sx={{
-                  marginRight: 1,
-                  color: '#585555',
+                  minHeight: 48,
+                  justifyContent: 'center',
+                  marginLeft: '1100px',
+                  px: 2.5,
                 }}
-              />
-            )}
+              >
+                <IconButton
+                  sx={{
+                    minWidth: 0,
+                    justifyContent: 'center',
+                  }}
+                >
+                  {isLoggedIn ? <PersonIcon /> : ' '}
+                </IconButton>
+                <Typography
+                  color="#585555"
+                  sx={{
+                    opacity: 1,
+                    textTransform: 'none',
+                  }}
+                >
+                  {isLoggedIn ? 'Hello, ' + username : ' ' }
+                </Typography>
+              </Button>
+
             <Link href="/login" style={{ textDecoration: 'none', alignContent: 'right' }}>
               <Button
                 sx={{
                   minHeight: 48,
                   justifyContent: 'center',
-                  marginLeft: '1350px',
+                  marginLeft: '0px',
                   px: 2.5,
                 }}
               >

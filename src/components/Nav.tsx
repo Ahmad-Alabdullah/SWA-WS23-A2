@@ -24,8 +24,9 @@ import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
 import Toolbar from '@mui/material/Toolbar';
 import Link from 'next/link';
 import { AppBar, Drawer, Header } from './Nav_Styles';
-import { Button, Paper, Typography } from '@mui/material';
+import { Button, Paper, Typography, styled } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import { Righteous } from 'next/font/google';
 
 export default function Nav() {
   const theme = useTheme();
@@ -52,7 +53,7 @@ export default function Nav() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} sx={{zIndex: theme.zIndex.drawer + 2}}>
         <Header>
         <IconButton 
             color="inherit"
@@ -62,7 +63,7 @@ export default function Nav() {
             sx={{ 
               color: '#FFFFFF', 
               position: 'relative', 
-              display: 'display-listitem',
+              display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               }}
@@ -104,17 +105,17 @@ export default function Nav() {
           ))}
         </List>
       </Drawer>
-      <AppBar position="relative" open={open}>
+      <AppBar position="fixed">
         <Toolbar
           sx={{
             backgroundColor: '#FFFFFF',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'left',
-            paddingLeft: '0px',
+            display: 'block',
+            position: 'fixed',
+            paddingLeft: '0',
+            zIndex: theme.zIndex.drawer + 1,
           }}
         >
-          <Paper elevation={0} sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography sx={{ marginRight: 1 }}>
               {isLoggedIn && `Hello, ${username}!`}
             </Typography>
@@ -126,18 +127,18 @@ export default function Nav() {
                 }}
               />
             )}
-            <Link href="/login" style={{ textDecoration: 'none' }}>
+            <Link href="/login" style={{ textDecoration: 'none', alignContent: 'right' }}>
               <Button
                 sx={{
                   minHeight: 48,
                   justifyContent: 'center',
+                  marginLeft: '1350px',
                   px: 2.5,
                 }}
               >
                 <IconButton
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : 'auto',
                     justifyContent: 'center',
                   }}
                 >
@@ -154,7 +155,7 @@ export default function Nav() {
                 </Typography>
               </Button>
             </Link>
-          </Paper>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>

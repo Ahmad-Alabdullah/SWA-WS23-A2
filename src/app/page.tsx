@@ -141,7 +141,7 @@ function Home() {
               <Typography
                 sx={{ width: '60%', margin: 'auto', marginBottom: '1rem' }}
               ></Typography>
-              <Link href="/search" passHref>
+              <Link href="/top" passHref>
                 <Button
                   variant="contained"
                   style={{ backgroundColor: '#047857' }}

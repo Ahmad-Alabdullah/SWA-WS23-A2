@@ -6,7 +6,6 @@ import { useContext, useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Box from '@mui/material/Box';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CssBaseline from '@mui/material/CssBaseline';
 import HomeIcon from '@mui/icons-material/Home';
 import IconButton from '@mui/material/IconButton';
@@ -61,29 +60,68 @@ export default function Nav() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <Drawer variant="permanent" open={open}>
+        <Header>
+        <IconButton 
+            color="inherit"
+            aria-label="toggle drawer"
+            onClick={open ? handleDrawerClose : handleDrawerOpen}
+            edge="start"
+            sx={{ 
+              color: '#FFFFFF', 
+              position: 'relative', 
+              display: 'display-listitem',
+              justifyContent: 'center',
+              alignItems: 'center',
+              }}
+          >
+            {open ? <ChevronLeftIcon /> : <MenuIcon />}
+          </IconButton>
+        </Header>
+        <List>
+          {menuItems.map(({ key, icon, href }) => (
+            <ListItem key={key} disablePadding sx={{ display: 'block' }}>
+              <Link href={href} style={{ textDecoration: 'none' }}>
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                      color: '#FFFFFF',
+                    }}
+                  >
+                    {icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={key}
+                    sx={{
+                      opacity: open ? 1 : 0,
+                      color: '#FFFFFF',
+                    }}
+                  />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+      <AppBar position="relative" open={open}>
         <Toolbar
           sx={{
             backgroundColor: '#FFFFFF',
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            alignItems: 'left',
             paddingLeft: '0px',
           }}
         >
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: 'none' }),
-              backgroundColor: '#047857',
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Paper elevation={0} sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography sx={{ marginRight: 1 }}>
               {isLoggedIn && `Hello, ${username}!`}
@@ -127,50 +165,6 @@ export default function Nav() {
           </Paper>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <Header>
-          <IconButton onClick={handleDrawerClose} sx={{ color: '#FFFFFF' }}>
-            {theme.direction === 'rtl' ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </Header>
-        <List>
-          {menuItems.map(({ key, icon, href }) => (
-            <ListItem key={key} disablePadding sx={{ display: 'block' }}>
-              <Link href={href} style={{ textDecoration: 'none' }}>
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                      color: '#FFFFFF',
-                    }}
-                  >
-                    {icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={key}
-                    sx={{
-                      opacity: open ? 1 : 0,
-                      color: '#FFFFFF',
-                    }}
-                  />
-                </ListItemButton>
-              </Link>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
     </Box>
   );
 }

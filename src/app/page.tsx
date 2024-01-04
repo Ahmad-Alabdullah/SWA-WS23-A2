@@ -11,6 +11,7 @@ import {
   TextField,
   Radio,
   RadioGroup,
+  Rating,
   Typography,
 } from '@mui/material';
 import Link from 'next/link';
@@ -23,9 +24,10 @@ function Home() {
         padding: '2rem',
         textAlign: 'center',
         position: 'absolute',
+        top: 50,
         bottom: 0,
-        left: 0,
-        width: '100%',
+        left: 50,
+        width: 'calc(100%-50)',
         color: 'white',
         paddingLeft: '80px',
       }}
@@ -74,7 +76,9 @@ function Home() {
                 alignItems: 'center',
               }}
             >
-              <h3>Starte hier Deine Suche</h3>
+              <Typography variant="h6" fontWeight="bold">
+                Starte hier Deine Suche
+              </Typography>
               <TextField
                 variant="outlined"
                 fullWidth
@@ -83,7 +87,11 @@ function Home() {
                 name="Suchen"
                 type="text"
                 autoFocus
-                style={{ backgroundColor: '#E6F1EE', marginBottom: '10px' }}
+                style={{
+                  backgroundColor: '#E6F1EE',
+                  marginBottom: '10px',
+                  marginTop: '15px',
+                }}
               />
               <FormControl>
                 <FormLabel id="row-radio-buttons-group-label"></FormLabel>
@@ -137,11 +145,20 @@ function Home() {
                 justifyContent: 'center',
               }}
             >
-              <h3>Aktuell beliebteste Bücher</h3>
               <Typography
-                sx={{ width: '60%', margin: 'auto', marginBottom: '1rem' }}
-              ></Typography>
-              <Link href="/top" passHref>
+                variant="h6"
+                fontWeight="bold"
+                style={{ marginBottom: '30px' }}
+              >
+                Aktuell beliebteste Bücher
+              </Typography>
+              <Rating
+                name="size-large"
+                value={5}
+                size="large"
+                style={{ marginBottom: '35px' }}
+              />
+              <Link href="/top10" passHref>
                 <Button
                   variant="contained"
                   style={{ backgroundColor: '#047857' }}

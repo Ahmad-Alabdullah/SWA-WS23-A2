@@ -62,7 +62,7 @@ function Search() {
     setFilter({ ...filter, [name]: value });
   };
 
-  const fetchBuecher = () => {
+  async function fetchBuecher() {
     setIsLoading(true);
     setIsError(undefined);
 
@@ -81,35 +81,35 @@ function Search() {
       queryFilter.push({ key: 'rating', value: filter.rating });
     }
 
-    queryBuecher(
-      [
-        BuchQueryField.id,
-        BuchQueryField.titel,
-        BuchQueryField.isbn,
-        BuchQueryField.art,
-        BuchQueryField.lieferbar,
-        BuchQueryField.rating,
-      ],
-      queryFilter,
-    )
-      .then((result: any) => {
-        setIsLoading(false);
+    try {
+      const result = await queryBuecher(
+        [
+          BuchQueryField.id,
+          BuchQueryField.titel,
+          BuchQueryField.isbn,
+          BuchQueryField.art,
+          BuchQueryField.lieferbar,
+          BuchQueryField.rating,
+        ],
+        queryFilter,
+      );
 
-        if (result.data.data.buecher) {
-          setBuecher(result.data.data.buecher);
-        }
-        if (result.data.errors) {
-          const errorString = result.data.errors
-            .flatMap((error: any) => error.message)
-            .toString();
-          setIsError(errorString);
-        }
-      })
-      .catch((err: any) => {
-        setIsLoading(false);
-        setIsError(err.message);
-      });
-  };
+      setIsLoading(false);
+
+      if (result.data.data.buecher) {
+        setBuecher(result.data.data.buecher);
+      }
+      if (result.data.errors) {
+        const errorString = result.data.errors
+          .flatMap((error: any) => error.message)
+          .toString();
+        setIsError(errorString);
+      }
+    } catch (err: any) {
+      setIsLoading(false);
+      setIsError(err.message);
+    }
+  }
 
   const handleFilterSubmit = (e: any) => {
     e.preventDefault();
@@ -123,7 +123,7 @@ function Search() {
 
   return (
     <>
-      <Box paddingLeft="100px" >
+      <Box paddingLeft="100px">
         <Grid
           container
           direction="row"
@@ -203,7 +203,11 @@ function Search() {
                 name="rating"
                 value={filter.rating}
                 onChange={handleFilterChange}
-                sx={{ '& .MuiSvgIcon-root': { fontSize: 28 }, paddingLeft: '30px', paddingBottom: '30px' }}
+                sx={{
+                  '& .MuiSvgIcon-root': { fontSize: 28 },
+                  paddingLeft: '30px',
+                  paddingBottom: '30px',
+                }}
               />
             </Typography>
 
@@ -266,64 +270,62 @@ function Search() {
               )}
               {!isLoading && !isError && buecher.length > 0
                 ? buecher.map((buch: Buch) => (
-                  <Card
-                    style={{
-                      textAlign: 'left',
-                      marginBottom: '2rem',
-                      paddingLeft: '1rem',
-                    }}
-                    key={buch.id}
-                  >
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {buch.titel?.titel}
-                      </Typography>
-                      <Typography
-                        gutterBottom
-                        variant="body1"
-                        component="div"
-                        style={{ marginLeft: '0.5rem' }}
-                      >
-                        <b>ISBN:</b> {buch.isbn}
-                      </Typography>
-                      <Typography
-                        gutterBottom
-                        variant="body1"
-                        component="div"
-                        style={{ marginLeft: '0.5rem' }}
-                      >
-                        <b>ART:</b> {buch.art}
-                      </Typography>
-                      <Typography
-                        gutterBottom
-                        variant="body1"
-                        component="div"
-                        style={{ marginLeft: '0.5rem' }}
-                      >
-                        <b>LIEFERBAR:</b>{' '}
-                        {buch.lieferbar === true ? 'Ja' : 'Nein'}
-                      </Typography>
-                      <Rating
-                        value={buch.rating}
-                        readOnly={true}
-                        sx={{ '& .MuiSvgIcon-root': { fontSize: 25 } }}
-                        style={{ marginLeft: '0.5rem' }}
-                      />
-                    </CardContent>
-                    <CardActions style={{ justifyContent: 'end' }}>
-                      <Link href="/search/${buch.id}" passHref>
-                        <Button>
-                          Details anzeigen
-                        </Button>
-                      </Link>
-                    </CardActions>
-                  </Card>
-                ))
+                    <Card
+                      style={{
+                        textAlign: 'left',
+                        marginBottom: '2rem',
+                        paddingLeft: '1rem',
+                      }}
+                      key={buch.id}
+                    >
+                      <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                          {buch.titel?.titel}
+                        </Typography>
+                        <Typography
+                          gutterBottom
+                          variant="body1"
+                          component="div"
+                          style={{ marginLeft: '0.5rem' }}
+                        >
+                          <b>ISBN:</b> {buch.isbn}
+                        </Typography>
+                        <Typography
+                          gutterBottom
+                          variant="body1"
+                          component="div"
+                          style={{ marginLeft: '0.5rem' }}
+                        >
+                          <b>ART:</b> {buch.art}
+                        </Typography>
+                        <Typography
+                          gutterBottom
+                          variant="body1"
+                          component="div"
+                          style={{ marginLeft: '0.5rem' }}
+                        >
+                          <b>LIEFERBAR:</b>{' '}
+                          {buch.lieferbar === true ? 'Ja' : 'Nein'}
+                        </Typography>
+                        <Rating
+                          value={buch.rating}
+                          readOnly={true}
+                          sx={{ '& .MuiSvgIcon-root': { fontSize: 25 } }}
+                          style={{ marginLeft: '0.5rem' }}
+                        />
+                      </CardContent>
+                      <CardActions style={{ justifyContent: 'end' }}>
+                        <Link href="/search/${buch.id}" passHref>
+                          <Button>Details anzeigen</Button>
+                        </Link>
+                      </CardActions>
+                    </Card>
+                  ))
                 : false}
             </div>
           </Grid>
         </Grid>
-      </Box >
+      </Box>
     </>
   );
 }

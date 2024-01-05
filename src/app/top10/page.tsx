@@ -4,6 +4,7 @@ import ImageCarousel from '@/components/Carousel';
 import React, { useEffect, useState } from 'react';
 import { queryBuecher, queryLoadImage } from '../../graphql/graphql';
 import { BuchQueryField, Buch } from '@/graphql/interfaces';
+import { Card, CardContent, Grid } from '@mui/material';
 
 const Top = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -71,22 +72,39 @@ const Top = () => {
   }, [buecher]);
 
   return (
-    <div>
-      {isLoading && <p>Loading...</p>}
-      {isError && <p>Error: {isError}</p>}
-      {!isLoading && !isError && buecher.length > 0 && (
-        <ImageCarousel
-          items={buecher.map((buch) => ({
-            imgPath:
-              buch.id && imageData[buch.id]
-                ? `data:image/jpeg;base64, ${imageData[buch.id]}`
-                : '',
-            label: buch.titel?.titel || 'Unknown',
-            rating: buch.rating || 0,
-          }))}
-        />
-      )}
-    </div>
+    <Grid item md={6} style={{
+      padding: '4rem', display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <Card style={{ width: '500px', backgroundColor: '#FFF' }}>
+        <CardContent
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            height: '550px',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {isLoading && <p>Loading...</p>}
+          {isError && <p>Error: {isError}</p>}
+          {!isLoading && !isError && buecher.length > 0 && (
+            <ImageCarousel
+              items={buecher.map((buch) => ({
+                imgPath:
+                  buch.id && imageData[buch.id]
+                    ? `data:image/jpeg;base64, ${imageData[buch.id]}`
+                    : '',
+                label: buch.titel?.titel || 'Unknown',
+                rating: buch.rating || 0,
+              }))}
+            />
+          )}
+        </CardContent>
+      </Card>
+    </Grid>
   );
 };
 

@@ -75,7 +75,8 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ items }) => {
                     display: 'block',
                     maxWidth: 400,
                     overflow: 'hidden',
-                    width: '100%',
+                    width: 'auto',
+                    margin: 'auto',
                   }}
                 />
                 <Typography
@@ -101,7 +102,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ items }) => {
         activeStep={activeStep}
         nextButton={
           <Button
-            size="small"
+            size="medium"
             onClick={handleNext}
             disabled={activeStep === maxSteps - 1}
           >

@@ -20,13 +20,16 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import { queryBuecher } from '../../graphql/graphql';
+import { truncate } from 'fs';
 
 function Search() {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(undefined);
+  const searchParams = useSearchParams();
   const [filter, setFilter] = useState({
     titel: '',
     isbn: '',
@@ -65,6 +68,9 @@ function Search() {
   };
 
   async function fetchBuecher() {
+
+    console.log(`titel: ${filter.titel}`);
+
     setIsLoading(true);
     setIsError(undefined);
 
@@ -121,10 +127,47 @@ function Search() {
     fetchBuecher();
   };
 
-  //Only run useEffect once
   useEffect(() => {
+    const term = searchParams.get('term');
+    const type = searchParams.get('type');
+  
+    // Funktion zum Aktualisieren des Zustands
+    const updateFilter = () => {
+      if (type === 'title') {
+        setFilter((prevFilter) => ({
+          ...prevFilter,
+          titel: term || '',
+          isbn: '',
+          art: '',
+          lieferbar: false,
+          rating: 0,
+        }));
+      } else if (type === 'isbn') {
+        setFilter((prevFilter) => ({
+          ...prevFilter,
+          titel: '',
+          isbn: term || '',
+          art: '',
+          lieferbar: false,
+          rating: 0,
+        }));
+      } else {
+        setFilter({
+          titel: '',
+          isbn: '',
+          art: '',
+          lieferbar: false,
+          rating: 0,
+        });
+      }
+    };
+  
+    // Zustand basierend auf Bedingungen aktualisieren
+    updateFilter();
+  
+    // Weitere Logik oder Funktionen hier ausführen, wenn erforderlich
     fetchBuecher();
-  }, []);
+  }, [searchParams]);
 
   return (
     <>

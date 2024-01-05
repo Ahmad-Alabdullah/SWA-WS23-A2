@@ -1,3 +1,6 @@
+'use client';
+
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -17,6 +20,14 @@ import {
 import Link from 'next/link';
 
 function Home() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchType, setSearchType] = useState('title'); // 'title' or 'isbn'
+
+  const handleSearch = () => {
+    // Hier können Sie die Logik für die Suche implementieren
+    // Zum Beispiel die Navigation zur Suchseite mit den entsprechenden Query-Parametern
+  };
+
   return (
     <Box
       sx={{
@@ -27,7 +38,7 @@ function Home() {
         top: 50,
         bottom: 0,
         left: 50,
-        width: 'calc(100%-50)',
+        width: 'calc(100% - 50px)', // Korrektur: Leerzeichen hinzugefügt
         color: 'white',
         paddingLeft: '80px',
       }}
@@ -87,6 +98,8 @@ function Home() {
                 label="Suchen"
                 name="Suchen"
                 type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 autoFocus
                 style={{
                   backgroundColor: '#E6F1EE',
@@ -105,44 +118,53 @@ function Home() {
                     width: '100%',
                     marginBottom: '10px',
                   }}
+                  value={searchType}
+                  onChange={(e) => setSearchType(e.target.value)}
                 >
                   <FormControlLabel
-                    value="nach Titel"
+                    value="title"
                     control={<Radio color="success" />}
                     label="nach Titel"
                     style={{ paddingRight: '40px' }}
                   />
                   <FormControlLabel
-                    value="nach ISBN"
+                    value="isbn"
                     control={<Radio color="success" />}
                     label="nach ISBN"
                     style={{ paddingRight: '40px' }}
                   />
                 </RadioGroup>
               </FormControl>
-              <FormControl style={{
-                width: 'flex',
-                display: 'flex',
-                gap: '50px',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-                <Button
-                  variant="contained"
+              <FormControl
+                style={{
+                  width: 'flex',
+                  display: 'flex',
+                  gap: '50px',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                {/* Verwenden Sie die Link-Komponente für die Suche */}
+                <Link
+                  href={{
+                    pathname: '/search',
+                    query: { term: searchTerm, type: searchType },
+                  }}
+                  passHref
                 >
-                  suchen
-                </Button>
-                <Button
-                  variant="contained"
-                >
-                  zur erweiterten Suche
-                </Button>
+                  <Button variant="contained" onClick={handleSearch}>
+                    suchen
+                  </Button>
+                </Link>
+                <Link href="/search" passHref>
+                  <Button variant="contained">zur erweiterten Suche</Button>
+                </Link>
               </FormControl>
-
             </CardContent>
           </Card>
         </Grid>
+
         <Grid item xs={6}>
           <Card>
             <CardContent
@@ -168,11 +190,7 @@ function Home() {
                 style={{ marginBottom: '35px' }}
               />
               <Link href="/top10" passHref>
-                <Button
-                  variant="contained"
-                >
-                  Zur Ansicht
-                </Button>
+                <Button variant="contained">Zur Ansicht</Button>
               </Link>
             </CardContent>
           </Card>

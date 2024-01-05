@@ -7,8 +7,26 @@ const theme = createTheme({
     mode: 'light',
     primary: {
         main: '#047857',
-    }
+    },
   },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          background: "#E6F1EE"
+        }
+      }
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-root": {
+            background: '#FFFFFF',
+          }
+        }
+      }
+    }
+  }
 });
 
 export default theme;

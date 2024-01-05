@@ -75,11 +75,13 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ items }) => {
                     display: 'block',
                     maxWidth: 400,
                     overflow: 'hidden',
-                    width: '100%',
+                    width: 'auto',
+                    margin: 'auto',
                   }}
                 />
                 <Typography
-                  variant="h6"
+                  variant="h4"
+                  alignItems={'center'}
                   sx={{ marginTop: 2, color: '#047857' }}
                 >
                   {step.label}
@@ -101,7 +103,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ items }) => {
         activeStep={activeStep}
         nextButton={
           <Button
-            size="small"
+            size="medium"
             onClick={handleNext}
             disabled={activeStep === maxSteps - 1}
           >

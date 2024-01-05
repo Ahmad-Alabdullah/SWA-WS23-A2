@@ -1,6 +1,6 @@
 'use client';
 
-import { Alert, Box, Button, Card, Snackbar, TextField } from '@mui/material';
+import { Alert, Box, Button, Card, Snackbar, TextField, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import LoginContext from '@/context/LoginProvider';
@@ -71,7 +71,9 @@ function LoggedOut() {
   return (
     <>
       <LoginForm onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <Typography variant='h5'>
+          Login
+        </Typography>
         <InputField
           variant="outlined"
           required
@@ -101,7 +103,6 @@ function LoggedOut() {
           type="submit"
           fullWidth
           variant="contained"
-          style={{ backgroundColor: '#047857' }}
         >
           Anmelden
         </Button>

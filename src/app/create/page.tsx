@@ -16,6 +16,7 @@ import {
   MenuItem,
   Rating,
   Select,
+  TextField,
   Typography,
 } from '@mui/material';
 import { useContext, useState } from 'react';
@@ -209,7 +210,7 @@ function Create() {
         } else if (
           response.data.errors &&
           response.data.errors[0].message ===
-            `Die ISBN ${formValues.isbn} existiert bereits`
+          `Die ISBN ${formValues.isbn} existiert bereits`
         ) {
           setValidation('isbn', false, 'Die ISBN existiert bereits');
           setValidation('bookCreated', false);
@@ -236,16 +237,18 @@ function Create() {
               sx={{ marginLeft: '1rem', marginTop: '1rem' }}
             >
               <Box display="flex" alignItems="center">
-                <FormLabel sx={{ marginLeft: '1rem', marginRight: '1rem' }}>
-                  Titel
-                </FormLabel>
-                <Input
+                <TextField
                   required
-                  type="text"
+                  variant="outlined"
+                  fullWidth
+                  id="Titel"
+                  label="Titel"
                   name="titel"
+                  type="text"
                   value={titelInput.titel}
                   onChange={handleTitelChange}
-                  sx={{ marginBottom: '1rem', marginLeft: '55px' }}
+                  autoFocus
+                  sx={{ marginBottom: '1rem', marginLeft: '2rem' }}
                 />
               </Box>
               {validationErrors.titel.isValid === false && (
@@ -256,16 +259,18 @@ function Create() {
             </FormControl>
             <FormControl fullWidth margin="normal" sx={{ marginLeft: '1rem' }}>
               <Box display="flex" alignItems="center">
-                <FormLabel sx={{ marginLeft: '1rem', marginRight: '2rem' }}>
-                  ISBN
-                </FormLabel>
-                <Input
+                <TextField
                   required
-                  type="text"
+                  variant="outlined"
+                  fullWidth
+                  id="ISBN"
+                  label="ISBN"
                   name="isbn"
+                  type="text"
                   value={formValues.isbn}
                   onChange={handleInputChange}
                   sx={{ marginBottom: '1rem', marginLeft: '2rem' }}
+                  autoFocus
                 />
               </Box>
               {validationErrors.isbn.isValid === false && (
@@ -276,15 +281,18 @@ function Create() {
             </FormControl>
             <FormControl fullWidth margin="normal" sx={{ marginLeft: '1rem' }}>
               <Box display="flex" alignItems="center">
-                <FormLabel sx={{ marginLeft: '1rem', marginRight: '2rem' }}>
-                  Preis
-                </FormLabel>
-                <Input
-                  type="number"
+                <TextField
+                  required
+                  variant="outlined"
+                  fullWidth
+                  id="Preis"
+                  label="Preis"
                   name="preis"
+                  type="number"
                   value={formValues.preis}
                   onChange={handleInputChange}
                   sx={{ marginBottom: '1rem', marginLeft: '2rem' }}
+                  autoFocus
                 />
               </Box>
               {validationErrors.preis.isValid === false && (
@@ -295,15 +303,17 @@ function Create() {
             </FormControl>
             <FormControl fullWidth margin="normal" sx={{ marginLeft: '1rem' }}>
               <Box display="flex" alignItems="center">
-                <FormLabel sx={{ marginLeft: '1rem', marginRight: '20px' }}>
-                  Rabatt
-                </FormLabel>
-                <Input
-                  type="number"
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="Rabatt"
+                  label="Rabatt"
                   name="rabatt"
+                  type="number"
                   value={formValues.rabatt}
                   onChange={handleInputChange}
                   sx={{ marginBottom: '1rem', marginLeft: '2rem' }}
+                  autoFocus
                 />
               </Box>
               {validationErrors.rabatt.isValid === false && (
@@ -314,15 +324,17 @@ function Create() {
             </FormControl>
             <FormControl fullWidth margin="normal" sx={{ marginLeft: '1rem' }}>
               <Box display="flex" alignItems="center">
-                <FormLabel sx={{ marginLeft: '1rem', marginRight: '20px' }}>
-                  Homepage
-                </FormLabel>
-                <Input
-                  type="text"
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="Homepage"
+                  label="Homepage"
                   name="homepage"
+                  type="text"
                   value={formValues.homepage}
                   onChange={handleInputChange}
-                  sx={{ marginBottom: '1rem' }}
+                  sx={{ marginBottom: '1rem', marginLeft: '2rem' }}
+                  autoFocus
                 />
               </Box>
               {validationErrors.homepage.isValid === false && (
@@ -335,15 +347,17 @@ function Create() {
           <Box width="45%">
             <FormControl fullWidth margin="normal" sx={{ marginLeft: '1rem' }}>
               <Box display="flex" alignItems="center">
-                <FormLabel sx={{ marginLeft: '1rem', marginRight: '1rem' }}>
-                  Schlagwoerter
-                </FormLabel>
-                <Input
-                  type="text"
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="Schlagwoerter"
+                  label="Schlagwoerter"
                   name="schlagwoerter"
+                  type="text"
                   value={schlagwoerter}
                   onChange={handleSchlagwoerterChange}
                   sx={{ marginBottom: '1rem' }}
+                  autoFocus
                 />
               </Box>
               {validationErrors.schlagwoerter.isValid === false && (
@@ -351,6 +365,24 @@ function Create() {
                   {validationErrors.schlagwoerter.message}
                 </Typography>
               )}
+            </FormControl>
+            <FormControl
+              fullWidth
+              sx={{ marginTop: '2rem', marginLeft: '1rem' }}
+            >
+              <InputLabel id="art-select-label">Art</InputLabel>
+              <Select
+                labelId="art-select-label"
+                id="art-select"
+                label="Art"
+                name="art"
+                value={formValues.art}
+                onChange={handleInputChange}
+                style={{ marginBottom: '1rem' }}
+              >
+                <MenuItem value={'DRUCKAUSGABE'}>DRUCKAUSGABE</MenuItem>
+                <MenuItem value={'KINDLE'}>KINDLE</MenuItem>
+              </Select>
             </FormControl>
             <FormControl
               fullWidth
@@ -409,24 +441,7 @@ function Create() {
                 />
               </Box>
             </FormControl>
-            <FormControl
-              fullWidth
-              sx={{ marginTop: '2rem', marginLeft: '2rem' }}
-            >
-              <InputLabel id="art-select-label">Art</InputLabel>
-              <Select
-                labelId="art-select-label"
-                id="art-select"
-                label="Art"
-                name="art"
-                value={formValues.art}
-                onChange={handleInputChange}
-                style={{ marginBottom: '1rem' }}
-              >
-                <MenuItem value={'DRUCKAUSGABE'}>DRUCKAUSGABE</MenuItem>
-                <MenuItem value={'KINDLE'}>KINDLE</MenuItem>
-              </Select>
-            </FormControl>
+
           </Box>
         </Box>
         <Box textAlign="center" marginTop="1rem" marginRight="1rem">

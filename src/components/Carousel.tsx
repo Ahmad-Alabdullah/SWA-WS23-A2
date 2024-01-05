@@ -65,7 +65,15 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ items }) => {
         {items.map((step, index) => (
           <div key={step.label}>
             {Math.abs(activeStep - index) <= 2 ? (
-              <Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  position: 'relative',
+                }}
+              >
                 <img
                   src={step.imgPath}
                   alt={step.label}
@@ -76,12 +84,13 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ items }) => {
                     overflow: 'hidden',
                     width: 'auto',
                     margin: 'auto',
+                    paddingBottom: '10px',
                   }}
                 />
                 <Typography
                   variant="h4"
                   alignItems={'center'}
-                  sx={{ marginTop: 2, color: '#047857' }}
+                  sx={{ marginTop: 2, color: '#047857', textAlign: 'center', paddingBottom: '10px' }}
                 >
                   {step.label}
                 </Typography>
@@ -89,7 +98,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ items }) => {
                   value={step.rating}
                   precision={0.5}
                   readOnly
-                  sx={{ marginTop: 1 }}
+                  sx={{ marginTop: 1, paddingBottom: '30px' }}
                 />
               </Box>
             ) : null}
@@ -124,6 +133,12 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ items }) => {
             Back
           </Button>
         }
+        sx={{
+          position: 'relative',
+          bottom: 0,
+          left: 0,
+          right: 0,
+        }}
       />
     </Box>
   );

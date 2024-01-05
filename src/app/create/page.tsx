@@ -19,7 +19,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useContext, useState, useRef } from 'react';
 import LoginContext from '@/context/LoginProvider';
 import { parse as parseIsbn } from 'isbn-utils';
 import { createBuch } from '@/graphql/graphql';
@@ -59,7 +59,31 @@ function Create() {
     schlagwoerter: [],
   });
 
-  const [showPopup, setShowPopup] = useState(false);
+  const showPopupRef = useRef(false);
+
+  const setShowPopup = (value: boolean) => {
+    showPopupRef.current = value;
+  };
+
+  const [errorInfo, setErrorInfo] = useState({
+    showErrorDialog: false,
+    errorMessage: '',
+  });
+
+  const showErrorDialog = (errorMessage: string) => {
+    setErrorInfo({
+      showErrorDialog: true,
+      errorMessage,
+    });
+  };
+
+  // Function to hide the error dialog
+  const hideErrorDialog = () => {
+    setErrorInfo({
+      showErrorDialog: false,
+      errorMessage: '',
+    });
+  };
 
   const { isLoggedIn } = useContext(LoginContext);
 
@@ -184,45 +208,47 @@ function Create() {
     setFormValues({ ...formValues, [name]: newValue });
   };
 
+  const resetForm = () => {
+    setTitelInput({ titel: '' });
+    setSchlagwoerter('');
+    setFormValues({
+      titel: { titel: '' },
+      isbn: '',
+      rating: 0,
+      art: 'DRUCKAUSGABE',
+      preis: 9.95,
+      rabatt: 0,
+      lieferbar: false,
+      datum: undefined,
+      homepage: '',
+      schlagwoerter: [],
+    });
+    setShowPopup(false);
+    setValidationErrors((prevState) => ({
+      ...prevState,
+      bookCreated: { isValid: undefined, message: '' },
+    }));
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    try {
-      checkIfEmpty();
-      formValues.titel = titelInput;
-      formValues.schlagwoerter = splitSchlagwoerter();
-      const response = await createBuch(formValues);
-      const { errors } = response.data;
-      const statusCode = errors
-        ? response.data.errors[0]?.extensions?.originalError?.statusCode
-        : undefined;
-      if (response.status === 200) {
-        if (response.data.errors && statusCode === 403) {
-          const errMsg = isLoggedIn
-            ? 'Ungenügende Berechtigungen'
-            : 'Nicht eingeloggt';
-          setValidation('bookCreated', false, errMsg);
-        } else if (response.data.errors && statusCode === 400) {
-          setValidation(
-            'bookCreated',
-            false,
-            'Buch konnte nicht erstellt werden',
-          );
-        } else if (
-          response.data.errors &&
-          response.data.errors[0].message ===
-          `Die ISBN ${formValues.isbn} existiert bereits`
-        ) {
-          setValidation('isbn', false, 'Die ISBN existiert bereits');
-          setValidation('bookCreated', false);
-        } else {
-          // Book created
-          setShowPopup(true);
-        }
-      }
-    } catch (error: any) {
-      console.log(error);
+    checkIfEmpty();
+    formValues.titel = titelInput;
+    formValues.schlagwoerter = splitSchlagwoerter();
+    const response = await createBuch(formValues);
+
+    console.log('GraphQL Response:', response);
+
+    const responseData = response.data?.create;
+
+    if (responseData && responseData.id) {
+      // Show the success popup
+      setShowPopup(true);
+    } else if (response.data?.errors) {
+      showErrorDialog(response.data.errors[0]?.message);
     }
   };
+
   return (
     <Box display="flex" justifyContent="center" paddingTop="150px">
       <form onSubmit={handleSubmit} style={{ width: '50%' }}>
@@ -455,7 +481,7 @@ function Create() {
               Buch erstellen
             </Button>
           </Box>
-          <Dialog open={showPopup} onClose={() => setShowPopup(false)}>
+          <Dialog open={showPopupRef.current} onClose={resetForm}>
             <DialogTitle>Buch erstellt</DialogTitle>
             <DialogContent>
               <Typography>
@@ -469,8 +495,19 @@ function Create() {
               <Typography>ISBN: {formValues.lieferbar}</Typography>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => setShowPopup(false)} color="primary">
+              <Button onClick={resetForm} color="primary">
                 Schließen
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog open={errorInfo.showErrorDialog} onClose={hideErrorDialog}>
+            <DialogTitle>Error</DialogTitle>
+            <DialogContent>
+              <Typography>{errorInfo.errorMessage}</Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={hideErrorDialog} color="primary">
+                OK
               </Button>
             </DialogActions>
           </Dialog>

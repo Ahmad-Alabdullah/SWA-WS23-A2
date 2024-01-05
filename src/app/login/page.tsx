@@ -70,11 +70,12 @@ function LoggedOut() {
 
   return (
     <>
-      <LoginForm onSubmit={handleSubmit} sx={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        bgcolor: '#E6F1EE',
-      }}
+      <LoginForm onSubmit={handleSubmit}
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: '#E6F1EE',
+        }}
       >
         <Typography variant='h5' paddingTop="40px" paddingBottom="50px">
           Login
@@ -130,8 +131,15 @@ function LoggedIn() {
   };
 
   return (
-    <LoginForm onSubmit={handleSubmit}>
-      <h2>Angemeldet als &apos;{username}&apos;</h2>
+    <LoginForm onSubmit={handleSubmit}
+      sx={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: '#E6F1EE',
+      }}>
+      <Typography variant='h5' paddingTop="60px" paddingBottom="50px" >
+        Angemeldet als &apos;{username}&apos;
+      </Typography>
       <Button
         fullWidth
         type="submit"

@@ -74,6 +74,7 @@ function Home() {
                 flexDirection: 'column',
                 height: '250px',
                 alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               <Typography variant="h6" fontWeight="bold">
@@ -112,12 +113,6 @@ function Home() {
                     style={{ paddingRight: '40px' }}
                   />
                   <FormControlLabel
-                    value="nach Author"
-                    control={<Radio color="success" />}
-                    label="nach Author"
-                    style={{ paddingRight: '40px' }}
-                  />
-                  <FormControlLabel
                     value="nach ISBN"
                     control={<Radio color="success" />}
                     label="nach ISBN"
@@ -125,12 +120,26 @@ function Home() {
                   />
                 </RadioGroup>
               </FormControl>
-              <Button
-                variant="contained"
-                style={{ backgroundColor: '#047857' }}
-              >
-                erweiterte Suche
-              </Button>
+              <FormControl style={{
+                width: 'flex',
+                display: 'flex',
+                gap: '50px',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+                <Button
+                  variant="contained"
+                >
+                  suchen
+                </Button>
+                <Button
+                  variant="contained"
+                >
+                  zur erweiterten Suche
+                </Button>
+              </FormControl>
+
             </CardContent>
           </Card>
         </Grid>
@@ -161,7 +170,6 @@ function Home() {
               <Link href="/top10" passHref>
                 <Button
                   variant="contained"
-                  style={{ backgroundColor: '#047857' }}
                 >
                   Zur Ansicht
                 </Button>

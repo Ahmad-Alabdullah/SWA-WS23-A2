@@ -80,7 +80,8 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ items }) => {
                   }}
                 />
                 <Typography
-                  variant="h6"
+                  variant="h4"
+                  alignItems={'center'}
                   sx={{ marginTop: 2, color: '#047857' }}
                 >
                   {step.label}

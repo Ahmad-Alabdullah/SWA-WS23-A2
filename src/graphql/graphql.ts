@@ -72,6 +72,41 @@ export const queryBuch = async (id: string): Promise<AxiosResponse> => {
     return axios.request(options);
 };
 
+export const queryLoadImage = async (bookId: string) => {
+    const query = `
+    query FindImage($imageInput: ImageInput!) {
+        findImage(imageInput: $imageInput) {
+            imageName
+            image
+        }
+    }
+`;
+
+const variables = {
+    imageInput: { imageName: `${bookId}.jpeg` },
+};
+
+const options = {
+    method: 'POST',
+    url: 'https://localhost:3000/graphql',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-REQUEST-TYPE': 'GraphQL',
+        ...(cookie.checkAuthCookie() && {
+            Authorization: `Bearer ${cookie.getAuthCookie().token}`,
+        }),
+    },
+    data: {
+        query,
+        variables,
+    },
+};
+
+return axios.request(options);
+
+};
+
+
 export const createBuch = async (buchData: BuchInput) => {
     const mutation = `
     mutation create($buchData: BuchInput!) {

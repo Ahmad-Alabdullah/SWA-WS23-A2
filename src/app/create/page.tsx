@@ -209,7 +209,7 @@ function Create() {
         } else if (
           response.data.errors &&
           response.data.errors[0].message ===
-          `Die ISBN ${formValues.isbn} existiert bereits`
+            `Die ISBN ${formValues.isbn} existiert bereits`
         ) {
           setValidation('isbn', false, 'Die ISBN existiert bereits');
           setValidation('bookCreated', false);
@@ -440,7 +440,6 @@ function Create() {
               Buch erstellen
             </Button>
           </Box>
-          {/* Popup content */}
           <Dialog open={showPopup} onClose={() => setShowPopup(false)}>
             <DialogTitle>Buch erstellt</DialogTitle>
             <DialogContent>

@@ -4,6 +4,10 @@ import {
   Box,
   Button,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -53,6 +57,8 @@ function Create() {
     homepage: undefined,
     schlagwoerter: [],
   });
+
+  const [showPopup, setShowPopup] = useState(false);
 
   const { isLoggedIn } = useContext(LoginContext);
 
@@ -208,7 +214,8 @@ function Create() {
           setValidation('isbn', false, 'Die ISBN existiert bereits');
           setValidation('bookCreated', false);
         } else {
-          setValidation('bookCreated', true, 'Buch wurde erfolgreich erstellt');
+          // Book created
+          setShowPopup(true);
         }
       }
     } catch (error: any) {
@@ -427,28 +434,31 @@ function Create() {
             <Button
               type="submit"
               variant="contained"
+              color="primary"
               onClick={handleSubmit}
-              style={{ backgroundColor: '#DC143C' }}
             >
               Buch erstellen
             </Button>
           </Box>
-          {validationErrors.bookCreated.isValid !== undefined && (
-            <Box display="flex" alignItems="center" justifyContent="center">
-              <Typography
-                variant="body2"
-                sx={{
-                  color:
-                    validationErrors.bookCreated.isValid === false
-                      ? 'red'
-                      : 'green',
-                  margin: '1rem 0 0 0',
-                }}
-              >
-                {validationErrors.bookCreated.message}
+          <Dialog open={showPopup} onClose={() => setShowPopup(false)}>
+            <DialogTitle>Buch erstellt</DialogTitle>
+            <DialogContent>
+              <Typography>
+                Das Buch wurde erfolgreich erstellt. Hier sind die Details:
               </Typography>
-            </Box>
-          )}
+              <Typography>Titel: {formValues.titel?.titel}</Typography>
+              <Typography>ISBN: {formValues.isbn}</Typography>
+              <Typography>Art: {formValues.art}</Typography>
+              <Typography>Preis: {formValues.preis}</Typography>
+              <Typography>Rating: {formValues.rating}</Typography>
+              <Typography>ISBN: {formValues.lieferbar}</Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setShowPopup(false)} color="primary">
+                Schließen
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       </form>
     </Box>

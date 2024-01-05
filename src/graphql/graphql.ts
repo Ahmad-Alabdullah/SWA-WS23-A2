@@ -164,29 +164,29 @@ export const login = async (username: string, password: string) => {
         errors: [],
     };
 
-    await axios
-        .request(options)
-        .then((result) => {
-            const { errors, data } = result.data;
-            const { login } = data;
-            if (login) {
-                const { token } = login;
-                const loggedIn = cookie.setAuthCookie(token);
-                if (!loggedIn) {
-                    throw new Error('Login fehlgeschlagen');
-                }
-                loginResult.loggedIn = loggedIn;
-            }
-            if (errors) {
-                const errMessage = errors
-                    .flatMap((err: { message: string }) => err.message)
-                    .toString();
-                loginResult.errors?.push(errMessage);
-            }
-        })
-        .catch((err) => loginResult.errors?.push(err.message));
+    try {
+    const result = await axios.request(options);
+    const { errors, data } = result.data;
+    const { login } = data;
+    if (login) {
+      const { token } = login;
+      const loggedIn = cookie.setAuthCookie(token);
+      if (!loggedIn) {
+        throw new Error('Login fehlgeschlagen');
+      }
+      loginResult.loggedIn = loggedIn;
+    }
+    if (errors) {
+      const errMessage = errors
+        .flatMap((err: { message: string }) => err.message)
+        .toString();
+      loginResult.errors?.push(errMessage);
+    }
+  } catch (err: any) {
+    loginResult.errors?.push(err.message);
+  }
 
-    return loginResult;
+  return loginResult;
 };
 
 export const logout = async () => {

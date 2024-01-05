@@ -29,6 +29,7 @@ function Search() {
   const [isError, setIsError] = useState(undefined);
   const [filter, setFilter] = useState({
     titel: '',
+    isbn: '',
     art: '',
     lieferbar: false,
     rating: 0,
@@ -38,6 +39,7 @@ function Search() {
   const resetFilter = () => {
     setFilter({
       titel: '',
+      isbn: '',
       art: '',
       lieferbar: false,
       rating: 0,
@@ -70,6 +72,9 @@ function Search() {
 
     if (filter.titel.length > 0) {
       queryFilter.push({ key: 'titel', value: filter.titel });
+    }
+    if (filter.isbn.length > 0) {
+      queryFilter.push({ key: 'isbn', value: filter.isbn });
     }
     if (filter.art.length > 0) {
       queryFilter.push({ key: 'art', value: filter.art });
@@ -152,21 +157,10 @@ function Search() {
             <FormControl fullWidth>
               <TextField
                 id="outlined-basic"
-                label="Author"
-                name="author"
-                variant="outlined"
-                value={filter.titel}
-                onChange={handleFilterChange}
-                style={{ marginBottom: '1rem' }}
-              />
-            </FormControl>
-            <FormControl fullWidth>
-              <TextField
-                id="outlined-basic"
                 label="ISBN"
                 name="isbn"
                 variant="outlined"
-                value={filter.titel}
+                value={filter.isbn}
                 onChange={handleFilterChange}
                 style={{ marginBottom: '1rem' }}
               />
@@ -315,7 +309,7 @@ function Search() {
                         />
                       </CardContent>
                       <CardActions style={{ justifyContent: 'end' }}>
-                        <Link href="/search/${buch.id}" passHref>
+                        <Link href={`/search/${buch.id}`}  passHref>
                           <Button>Details anzeigen</Button>
                         </Link>
                       </CardActions>

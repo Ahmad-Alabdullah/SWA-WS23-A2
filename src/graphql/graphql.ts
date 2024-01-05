@@ -110,7 +110,9 @@ return axios.request(options);
 export const createBuch = async (buchData: BuchInput) => {
     const mutation = `
     mutation create($buchData: BuchInput!) {
-      create(input: $buchData)
+      create(input: $buchData){
+        id
+      }
     }
   `;
 

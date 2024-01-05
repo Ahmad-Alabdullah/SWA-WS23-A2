@@ -70,8 +70,13 @@ function LoggedOut() {
 
   return (
     <>
-      <LoginForm onSubmit={handleSubmit}>
-        <Typography variant='h5'>
+      <LoginForm onSubmit={handleSubmit} sx={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: '#E6F1EE',
+      }}
+      >
+        <Typography variant='h5' paddingTop="40px" paddingBottom="50px">
           Login
         </Typography>
         <InputField

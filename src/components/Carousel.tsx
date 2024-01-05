@@ -55,7 +55,6 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ items }) => {
           bgcolor: 'background.default',
         }}
       >
-        <Typography>{items[activeStep].label}</Typography>
       </Paper>
       <AutoPlaySwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}

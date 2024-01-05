@@ -239,13 +239,10 @@ function Create() {
 
     console.log('GraphQL Response:', response);
 
-    const responseData = response.data?.create;
-
-    if (responseData && responseData.id) {
-      // Show the success popup
-      setShowPopup(true);
-    } else if (response.data?.errors) {
+    if (response.data?.errors) {
       showErrorDialog(response.data.errors[0]?.message);
+    } else {
+      setShowPopup(true);
     }
   };
 

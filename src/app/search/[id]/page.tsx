@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Rating, Card, CardContent, Typography, Container, CssBaseline } from '@mui/material';
 import { queryBuch, queryLoadImage } from '../../../graphql/graphql';
 import Link from 'next/link';
+import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 
 interface BuchDetailsProps {
   id: string;
@@ -25,6 +26,7 @@ function BuchDetails({ params }: { params: { id: string } }) {
   const [buch, setBuch] = useState<BuchDetailsProps | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [coverImage, setCoverImage] = useState<string>('');
+  const [error, setError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const fetchBuchDetails = async () => {
@@ -38,6 +40,7 @@ function BuchDetails({ params }: { params: { id: string } }) {
         }
       } catch (error) {
         console.error('Fehler beim Abrufen der Buchdetails:', error);
+        setError('Fehler beim Abrufen der Buchdetails. Bitte versuchen Sie es später erneut.');
       } finally {
         setIsLoading(false);
       }
@@ -57,6 +60,7 @@ function BuchDetails({ params }: { params: { id: string } }) {
           }
         } catch (error: any) {
           console.error('Fehler beim Laden des Cover-Bildes:', error.message);
+          setError('Fehler beim Laden des Cover-Bildes. Bitte versuchen Sie es später erneut.');
         }
       }
     };
@@ -65,11 +69,43 @@ function BuchDetails({ params }: { params: { id: string } }) {
   }, [buch]);
 
   if (isLoading) {
-    return <p>Lade Buchdetails...</p>;
+    return (
+      <Card style={{ textAlign: 'center', marginBottom: '2rem', padding: '1rem' }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            Lade Buchdetails...
+          </Typography>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card style={{ textAlign: 'center', marginBottom: '2rem', padding: '1rem' }}>
+        <CardContent>
+          <WarningAmberOutlinedIcon fontSize="large" />
+          <Typography variant="h6" gutterBottom>
+            Fehler beim Laden der Buchdetails
+          </Typography>
+          <Typography variant="body1" color="error">
+            {error}
+          </Typography>
+        </CardContent>
+      </Card>
+    );
   }
 
   if (!buch) {
-    return <p>Buch nicht gefunden</p>;
+    return (
+      <Card style={{ textAlign: 'center', marginBottom: '2rem', padding: '1rem', marginTop: '30px'}}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            Buch nicht gefunden
+          </Typography>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (

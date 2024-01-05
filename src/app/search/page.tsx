@@ -123,14 +123,14 @@ function Search() {
 
   return (
     <>
-      <Box paddingLeft="100px" >
+      <Box paddingLeft="100px" paddingTop="20px" >
         <Grid
           container
           direction="row"
           justifyContent="flex-start"
           alignItems="flex-start"
         >
-          <Grid item md={3} paddingTop="70px">
+          <Grid item md={3} paddingTop="50px">
             <Typography variant="h6" fontWeight={'bold'}>
               Suchfilter festlegen
             </Typography>

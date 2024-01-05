@@ -128,16 +128,20 @@ function Home() {
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
-                <Button
-                  variant="contained"
-                >
-                  suchen
-                </Button>
-                <Button
-                  variant="contained"
-                >
-                  zur erweiterten Suche
-                </Button>
+                <Link href="/search" passHref>
+                  <Button
+                    variant="contained"
+                  >
+                    suchen
+                  </Button>
+                </Link>
+                <Link href="/search" passHref>
+                  <Button
+                    variant="contained"
+                  >
+                    zur erweiterten Suche
+                  </Button>
+                </Link>
               </FormControl>
 
             </CardContent>

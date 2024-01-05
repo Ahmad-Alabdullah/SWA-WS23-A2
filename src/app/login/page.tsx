@@ -47,10 +47,11 @@ function LoggedOut() {
     }));
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     const { username, password } = credentials;
-    login(username, password).then((result) => {
+    try {
+      const result = await login(username, password);
       const { errors, loggedIn } = result;
       if (loggedIn) {
         updateIsLoggedIn();
@@ -61,8 +62,10 @@ function LoggedOut() {
         ));
         setError(<ul>{errorListItems}</ul>);
       }
-    });
-    resetCredentials();
+      resetCredentials();
+    } catch (error: any) {
+      console.error('Error during login:', error.message);
+    }
   };
 
   return (
@@ -111,11 +114,14 @@ function LoggedOut() {
 function LoggedIn() {
   const { username, updateIsLoggedIn } = useContext(LoginContext);
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
-    logout().then(() => {
+    try {
+      await logout();
       updateIsLoggedIn();
-    });
+    } catch (error: any) {
+      console.error('Error during logout:', error.message);
+    }
   };
 
   return (

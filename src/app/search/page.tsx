@@ -29,6 +29,7 @@ function Search() {
   const [isError, setIsError] = useState(undefined);
   const [filter, setFilter] = useState({
     titel: '',
+    isbn: '',
     art: '',
     lieferbar: false,
     rating: 0,
@@ -38,6 +39,7 @@ function Search() {
   const resetFilter = () => {
     setFilter({
       titel: '',
+      isbn: '',
       art: '',
       lieferbar: false,
       rating: 0,
@@ -62,7 +64,7 @@ function Search() {
     setFilter({ ...filter, [name]: value });
   };
 
-  const fetchBuecher = () => {
+  async function fetchBuecher() {
     setIsLoading(true);
     setIsError(undefined);
 
@@ -70,6 +72,9 @@ function Search() {
 
     if (filter.titel.length > 0) {
       queryFilter.push({ key: 'titel', value: filter.titel });
+    }
+    if (filter.isbn.length > 0) {
+      queryFilter.push({ key: 'isbn', value: filter.isbn });
     }
     if (filter.art.length > 0) {
       queryFilter.push({ key: 'art', value: filter.art });
@@ -81,35 +86,35 @@ function Search() {
       queryFilter.push({ key: 'rating', value: filter.rating });
     }
 
-    queryBuecher(
-      [
-        BuchQueryField.id,
-        BuchQueryField.titel,
-        BuchQueryField.isbn,
-        BuchQueryField.art,
-        BuchQueryField.lieferbar,
-        BuchQueryField.rating,
-      ],
-      queryFilter,
-    )
-      .then((result: any) => {
-        setIsLoading(false);
+    try {
+      const result = await queryBuecher(
+        [
+          BuchQueryField.id,
+          BuchQueryField.titel,
+          BuchQueryField.isbn,
+          BuchQueryField.art,
+          BuchQueryField.lieferbar,
+          BuchQueryField.rating,
+        ],
+        queryFilter,
+      );
 
-        if (result.data.data.buecher) {
-          setBuecher(result.data.data.buecher);
-        }
-        if (result.data.errors) {
-          const errorString = result.data.errors
-            .flatMap((error: any) => error.message)
-            .toString();
-          setIsError(errorString);
-        }
-      })
-      .catch((err: any) => {
-        setIsLoading(false);
-        setIsError(err.message);
-      });
-  };
+      setIsLoading(false);
+
+      if (result.data.data.buecher) {
+        setBuecher(result.data.data.buecher);
+      }
+      if (result.data.errors) {
+        const errorString = result.data.errors
+          .flatMap((error: any) => error.message)
+          .toString();
+        setIsError(errorString);
+      }
+    } catch (err: any) {
+      setIsLoading(false);
+      setIsError(err.message);
+    }
+  }
 
   const handleFilterSubmit = (e: any) => {
     e.preventDefault();
@@ -123,7 +128,7 @@ function Search() {
 
   return (
     <>
-      <Box paddingLeft="100px" paddingTop="20px" >
+      <Box paddingLeft="100px">
         <Grid
           container
           direction="row"
@@ -152,21 +157,10 @@ function Search() {
             <FormControl fullWidth>
               <TextField
                 id="outlined-basic"
-                label="Author"
-                name="author"
-                variant="outlined"
-                value={filter.titel}
-                onChange={handleFilterChange}
-                style={{ marginBottom: '1rem' }}
-              />
-            </FormControl>
-            <FormControl fullWidth>
-              <TextField
-                id="outlined-basic"
                 label="ISBN"
                 name="isbn"
                 variant="outlined"
-                value={filter.titel}
+                value={filter.isbn}
                 onChange={handleFilterChange}
                 style={{ marginBottom: '1rem' }}
               />
@@ -203,7 +197,11 @@ function Search() {
                 name="rating"
                 value={filter.rating}
                 onChange={handleFilterChange}
-                sx={{ '& .MuiSvgIcon-root': { fontSize: 28 }, paddingLeft: '30px', paddingBottom: '30px' }}
+                sx={{
+                  '& .MuiSvgIcon-root': { fontSize: 28 },
+                  paddingLeft: '30px',
+                  paddingBottom: '30px',
+                }}
               />
             </Typography>
 
@@ -311,10 +309,8 @@ function Search() {
                       />
                     </CardContent>
                     <CardActions style={{ justifyContent: 'end' }}>
-                      <Link href="/search/${buch.id}" passHref>
-                        <Button>
-                          Details anzeigen
-                        </Button>
+                      <Link href={`/search/${buch.id}`} passHref>
+                        <Button>Details anzeigen</Button>
                       </Link>
                     </CardActions>
                   </Card>
@@ -323,7 +319,7 @@ function Search() {
             </div>
           </Grid>
         </Grid>
-      </Box >
+      </Box>
     </>
   );
 }

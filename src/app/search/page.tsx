@@ -123,16 +123,17 @@ function Search() {
 
   return (
     <>
-      <Box paddingLeft="100px">
-        <h2>Suche</h2>
+      <Box paddingLeft="100px" >
         <Grid
           container
           direction="row"
           justifyContent="flex-start"
           alignItems="flex-start"
         >
-          <Grid item md={3}>
-            <h3>Suchfilter festlegen</h3>
+          <Grid item md={3} paddingTop="70px">
+            <Typography variant="h6" fontWeight={'bold'}>
+              Suchfilter festlegen
+            </Typography>
             <p>Sie können mehrere Suchfilter gleichzeitig festlegen</p>
             <div style={{ textAlign: 'right', paddingBottom: '0.3rem' }}>
               <Button onClick={resetFilter}>Zurücksetzen</Button>
@@ -142,6 +143,28 @@ function Search() {
                 id="outlined-basic"
                 label="Titel"
                 name="titel"
+                variant="outlined"
+                value={filter.titel}
+                onChange={handleFilterChange}
+                style={{ marginBottom: '1rem' }}
+              />
+            </FormControl>
+            <FormControl fullWidth>
+              <TextField
+                id="outlined-basic"
+                label="Author"
+                name="author"
+                variant="outlined"
+                value={filter.titel}
+                onChange={handleFilterChange}
+                style={{ marginBottom: '1rem' }}
+              />
+            </FormControl>
+            <FormControl fullWidth>
+              <TextField
+                id="outlined-basic"
+                label="ISBN"
+                name="isbn"
                 variant="outlined"
                 value={filter.titel}
                 onChange={handleFilterChange}
@@ -163,7 +186,6 @@ function Search() {
                 <MenuItem value={'KINDLE'}>KINDLE</MenuItem>
               </Select>
             </FormControl>
-            <hr />
             <FormControlLabel
               control={
                 <Checkbox
@@ -175,28 +197,24 @@ function Search() {
               }
               label="Buch ist lieferbar"
             />
-            <hr />
-            <Typography component="legend" style={{ marginBottom: '0.2rem' }}>
+            <Typography sx={{ display: 'flex', alignItems: 'bottom' }}>
               Rating
+              <Rating
+                name="rating"
+                value={filter.rating}
+                onChange={handleFilterChange}
+                sx={{ '& .MuiSvgIcon-root': { fontSize: 28 }, paddingLeft: '30px', paddingBottom: '30px' }}
+              />
             </Typography>
-            <Rating
-              name="rating"
-              value={filter.rating}
-              onChange={handleFilterChange}
-              sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
-            />
-            <hr />
-            <div style={{ marginTop: '1rem' }}>
-              <Button
-                variant="contained"
-                fullWidth
-                type="submit"
-                onClick={handleFilterSubmit}
-                style={{ backgroundColor: '#DC143C' }}
-              >
-                Anwenden
-              </Button>
-            </div>
+
+            <Button
+              variant="contained"
+              fullWidth
+              type="submit"
+              onClick={handleFilterSubmit}
+            >
+              Anwenden
+            </Button>
           </Grid>
           <Grid item md={9}>
             <div style={{ padding: '3rem' }}>
@@ -248,64 +266,64 @@ function Search() {
               )}
               {!isLoading && !isError && buecher.length > 0
                 ? buecher.map((buch: Buch) => (
-                    <Card
-                      style={{
-                        textAlign: 'left',
-                        marginBottom: '2rem',
-                        paddingLeft: '1rem',
-                      }}
-                      key={buch.id}
-                    >
-                      <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                          {buch.titel?.titel}
-                        </Typography>
-                        <Typography
-                          gutterBottom
-                          variant="body1"
-                          component="div"
-                          style={{ marginLeft: '0.5rem' }}
-                        >
-                          <b>ISBN:</b> {buch.isbn}
-                        </Typography>
-                        <Typography
-                          gutterBottom
-                          variant="body1"
-                          component="div"
-                          style={{ marginLeft: '0.5rem' }}
-                        >
-                          <b>ART:</b> {buch.art}
-                        </Typography>
-                        <Typography
-                          gutterBottom
-                          variant="body1"
-                          component="div"
-                          style={{ marginLeft: '0.5rem' }}
-                        >
-                          <b>LIEFERBAR:</b>{' '}
-                          {buch.lieferbar === true ? 'Ja' : 'Nein'}
-                        </Typography>
-                        <Rating
-                          value={buch.rating}
-                          readOnly={true}
-                          sx={{ '& .MuiSvgIcon-root': { fontSize: 25 } }}
-                          style={{ marginLeft: '0.5rem' }}
-                        />
-                      </CardContent>
-                      <CardActions style={{ justifyContent: 'end' }}>
-                        <Link href="/search/${buch.id}" passHref>
-                          <Button variant="contained" color="primary">
-                            Details anzeigen
-                          </Button>
-                        </Link>
-                      </CardActions>
-                    </Card>
-                  ))
+                  <Card
+                    style={{
+                      textAlign: 'left',
+                      marginBottom: '2rem',
+                      paddingLeft: '1rem',
+                    }}
+                    key={buch.id}
+                  >
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {buch.titel?.titel}
+                      </Typography>
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        component="div"
+                        style={{ marginLeft: '0.5rem' }}
+                      >
+                        <b>ISBN:</b> {buch.isbn}
+                      </Typography>
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        component="div"
+                        style={{ marginLeft: '0.5rem' }}
+                      >
+                        <b>ART:</b> {buch.art}
+                      </Typography>
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        component="div"
+                        style={{ marginLeft: '0.5rem' }}
+                      >
+                        <b>LIEFERBAR:</b>{' '}
+                        {buch.lieferbar === true ? 'Ja' : 'Nein'}
+                      </Typography>
+                      <Rating
+                        value={buch.rating}
+                        readOnly={true}
+                        sx={{ '& .MuiSvgIcon-root': { fontSize: 25 } }}
+                        style={{ marginLeft: '0.5rem' }}
+                      />
+                    </CardContent>
+                    <CardActions style={{ justifyContent: 'end' }}>
+                      <Link href="/search/${buch.id}" passHref>
+                        <Button>
+                          Details anzeigen
+                        </Button>
+                      </Link>
+                    </CardActions>
+                  </Card>
+                ))
                 : false}
             </div>
           </Grid>
         </Grid>
-      </Box>
+      </Box >
     </>
   );
 }

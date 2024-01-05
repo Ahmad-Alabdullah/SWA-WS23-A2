@@ -21,7 +21,7 @@ function Home() {
     <Box
       sx={{
         flexGrow: 1,
-        padding: '2rem',
+        padding: '1rem',
         textAlign: 'center',
         position: 'absolute',
         top: 50,

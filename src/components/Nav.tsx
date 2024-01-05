@@ -20,13 +20,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import PeopleIcon from '@mui/icons-material/People';
 import SearchIcon from '@mui/icons-material/Search';
-import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
 import Toolbar from '@mui/material/Toolbar';
 import Link from 'next/link';
 import { AppBar, Drawer, Header } from './Nav_Styles';
-import { Button, Paper, Typography, styled } from '@mui/material';
+import { Button, Typography, styled } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import { Righteous } from 'next/font/google';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 export default function Nav() {
   const theme = useTheme();
@@ -46,35 +45,35 @@ export default function Nav() {
     { key: 'Home', icon: <HomeIcon />, href: '/' },
     ...(isLoggedIn
       ? [
-          {
-            key: 'Hinzufügen',
-            icon: <AddCircleOutlineIcon />,
-            href: '/create',
-          },
-        ]
+        {
+          key: 'Hinzufügen',
+          icon: <AddCircleOutlineIcon />,
+          href: '/create',
+        },
+      ]
       : []),
     { key: 'Suche', icon: <SearchIcon />, href: '/search' },
-    { key: 'Diagramme', icon: <StackedLineChartIcon />, href: '/charts' },
+    { key: 'Top10', icon: <EmojiEventsIcon />, href: '/top10' },
     { key: 'Über uns', icon: <PeopleIcon />, href: '/about' },
   ];
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Drawer variant="permanent" open={open} sx={{zIndex: theme.zIndex.drawer + 2}}>
+      <Drawer variant="permanent" open={open} sx={{ zIndex: theme.zIndex.drawer + 2 }}>
         <Header>
-        <IconButton 
+          <IconButton
             color="inherit"
             aria-label="toggle drawer"
             onClick={open ? handleDrawerClose : handleDrawerOpen}
             edge="start"
-            sx={{ 
-              color: '#FFFFFF', 
-              position: 'relative', 
+            sx={{
+              color: '#FFFFFF',
+              position: 'relative',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              }}
+            }}
           >
             {open ? <ChevronLeftIcon /> : <MenuIcon />}
           </IconButton>
@@ -126,31 +125,31 @@ export default function Nav() {
           <Box sx={{ display: 'flex', alignItems: 'right' }}>
 
             <Button
+              sx={{
+                minHeight: 48,
+                justifyContent: 'center',
+                marginLeft: '1100px',
+                px: 2.5,
+              }}
+            >
+              <IconButton
                 sx={{
-                  minHeight: 48,
+                  minWidth: 0,
                   justifyContent: 'center',
-                  marginLeft: '1100px',
-                  px: 2.5,
                 }}
               >
-                <IconButton
-                  sx={{
-                    minWidth: 0,
-                    justifyContent: 'center',
-                  }}
-                >
-                  {isLoggedIn ? <PersonIcon /> : ' '}
-                </IconButton>
-                <Typography
-                  color="#585555"
-                  sx={{
-                    opacity: 1,
-                    textTransform: 'none',
-                  }}
-                >
-                  {isLoggedIn ? 'Hello, ' + username : ' ' }
-                </Typography>
-              </Button>
+                {isLoggedIn ? <PersonIcon /> : ' '}
+              </IconButton>
+              <Typography
+                color="#585555"
+                sx={{
+                  opacity: 1,
+                  textTransform: 'none',
+                }}
+              >
+                {isLoggedIn ? 'Hello, ' + username : ' '}
+              </Typography>
+            </Button>
 
             <Link href="/login" style={{ textDecoration: 'none', alignContent: 'right' }}>
               <Button

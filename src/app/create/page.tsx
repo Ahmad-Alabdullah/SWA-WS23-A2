@@ -16,9 +16,10 @@ import {
   MenuItem,
   Rating,
   Select,
+  TextField,
   Typography,
 } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useContext, useState, useRef } from 'react';
 import LoginContext from '@/context/LoginProvider';
 import { parse as parseIsbn } from 'isbn-utils';
 import { createBuch } from '@/graphql/graphql';
@@ -58,7 +59,31 @@ function Create() {
     schlagwoerter: [],
   });
 
-  const [showPopup, setShowPopup] = useState(false);
+  const showPopupRef = useRef(false);
+
+  const setShowPopup = (value: boolean) => {
+    showPopupRef.current = value;
+  };
+
+  const [errorInfo, setErrorInfo] = useState({
+    showErrorDialog: false,
+    errorMessage: '',
+  });
+
+  const showErrorDialog = (errorMessage: string) => {
+    setErrorInfo({
+      showErrorDialog: true,
+      errorMessage,
+    });
+  };
+
+  // Function to hide the error dialog
+  const hideErrorDialog = () => {
+    setErrorInfo({
+      showErrorDialog: false,
+      errorMessage: '',
+    });
+  };
 
   const { isLoggedIn } = useContext(LoginContext);
 
@@ -183,45 +208,44 @@ function Create() {
     setFormValues({ ...formValues, [name]: newValue });
   };
 
+  const resetForm = () => {
+    setTitelInput({ titel: '' });
+    setSchlagwoerter('');
+    setFormValues({
+      titel: { titel: '' },
+      isbn: '',
+      rating: 0,
+      art: 'DRUCKAUSGABE',
+      preis: 9.95,
+      rabatt: 0,
+      lieferbar: false,
+      datum: undefined,
+      homepage: '',
+      schlagwoerter: [],
+    });
+    setShowPopup(false);
+    setValidationErrors((prevState) => ({
+      ...prevState,
+      bookCreated: { isValid: undefined, message: '' },
+    }));
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    try {
-      checkIfEmpty();
-      formValues.titel = titelInput;
-      formValues.schlagwoerter = splitSchlagwoerter();
-      const response = await createBuch(formValues);
-      const { errors } = response.data;
-      const statusCode = errors
-        ? response.data.errors[0]?.extensions?.originalError?.statusCode
-        : undefined;
-      if (response.status === 200) {
-        if (response.data.errors && statusCode === 403) {
-          const errMsg = isLoggedIn
-            ? 'Ungenügende Berechtigungen'
-            : 'Nicht eingeloggt';
-          setValidation('bookCreated', false, errMsg);
-        } else if (response.data.errors && statusCode === 400) {
-          setValidation(
-            'bookCreated',
-            false,
-            'Buch konnte nicht erstellt werden',
-          );
-        } else if (
-          response.data.errors &&
-          response.data.errors[0].message ===
-            `Die ISBN ${formValues.isbn} existiert bereits`
-        ) {
-          setValidation('isbn', false, 'Die ISBN existiert bereits');
-          setValidation('bookCreated', false);
-        } else {
-          // Book created
-          setShowPopup(true);
-        }
-      }
-    } catch (error: any) {
-      console.log(error);
+    checkIfEmpty();
+    formValues.titel = titelInput;
+    formValues.schlagwoerter = splitSchlagwoerter();
+    const response = await createBuch(formValues);
+
+    console.log('GraphQL Response:', response);
+
+    if (response.data?.errors) {
+      showErrorDialog(response.data.errors[0]?.message);
+    } else {
+      setShowPopup(true);
     }
   };
+
   return (
     <Box display="flex" justifyContent="center" paddingTop="150px">
       <form onSubmit={handleSubmit} style={{ width: '50%' }}>
@@ -236,16 +260,18 @@ function Create() {
               sx={{ marginLeft: '1rem', marginTop: '1rem' }}
             >
               <Box display="flex" alignItems="center">
-                <FormLabel sx={{ marginLeft: '1rem', marginRight: '1rem' }}>
-                  Titel
-                </FormLabel>
-                <Input
+                <TextField
                   required
-                  type="text"
+                  variant="outlined"
+                  fullWidth
+                  id="Titel"
+                  label="Titel"
                   name="titel"
+                  type="text"
                   value={titelInput.titel}
                   onChange={handleTitelChange}
-                  sx={{ marginBottom: '1rem', marginLeft: '55px' }}
+                  autoFocus
+                  sx={{ marginBottom: '1rem', marginLeft: '2rem' }}
                 />
               </Box>
               {validationErrors.titel.isValid === false && (
@@ -256,16 +282,18 @@ function Create() {
             </FormControl>
             <FormControl fullWidth margin="normal" sx={{ marginLeft: '1rem' }}>
               <Box display="flex" alignItems="center">
-                <FormLabel sx={{ marginLeft: '1rem', marginRight: '2rem' }}>
-                  ISBN
-                </FormLabel>
-                <Input
+                <TextField
                   required
-                  type="text"
+                  variant="outlined"
+                  fullWidth
+                  id="ISBN"
+                  label="ISBN"
                   name="isbn"
+                  type="text"
                   value={formValues.isbn}
                   onChange={handleInputChange}
                   sx={{ marginBottom: '1rem', marginLeft: '2rem' }}
+                  autoFocus
                 />
               </Box>
               {validationErrors.isbn.isValid === false && (
@@ -276,15 +304,18 @@ function Create() {
             </FormControl>
             <FormControl fullWidth margin="normal" sx={{ marginLeft: '1rem' }}>
               <Box display="flex" alignItems="center">
-                <FormLabel sx={{ marginLeft: '1rem', marginRight: '2rem' }}>
-                  Preis
-                </FormLabel>
-                <Input
-                  type="number"
+                <TextField
+                  required
+                  variant="outlined"
+                  fullWidth
+                  id="Preis"
+                  label="Preis"
                   name="preis"
+                  type="number"
                   value={formValues.preis}
                   onChange={handleInputChange}
                   sx={{ marginBottom: '1rem', marginLeft: '2rem' }}
+                  autoFocus
                 />
               </Box>
               {validationErrors.preis.isValid === false && (
@@ -295,15 +326,17 @@ function Create() {
             </FormControl>
             <FormControl fullWidth margin="normal" sx={{ marginLeft: '1rem' }}>
               <Box display="flex" alignItems="center">
-                <FormLabel sx={{ marginLeft: '1rem', marginRight: '20px' }}>
-                  Rabatt
-                </FormLabel>
-                <Input
-                  type="number"
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="Rabatt"
+                  label="Rabatt"
                   name="rabatt"
+                  type="number"
                   value={formValues.rabatt}
                   onChange={handleInputChange}
                   sx={{ marginBottom: '1rem', marginLeft: '2rem' }}
+                  autoFocus
                 />
               </Box>
               {validationErrors.rabatt.isValid === false && (
@@ -314,15 +347,17 @@ function Create() {
             </FormControl>
             <FormControl fullWidth margin="normal" sx={{ marginLeft: '1rem' }}>
               <Box display="flex" alignItems="center">
-                <FormLabel sx={{ marginLeft: '1rem', marginRight: '20px' }}>
-                  Homepage
-                </FormLabel>
-                <Input
-                  type="text"
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="Homepage"
+                  label="Homepage"
                   name="homepage"
+                  type="text"
                   value={formValues.homepage}
                   onChange={handleInputChange}
-                  sx={{ marginBottom: '1rem' }}
+                  sx={{ marginBottom: '1rem', marginLeft: '2rem' }}
+                  autoFocus
                 />
               </Box>
               {validationErrors.homepage.isValid === false && (
@@ -335,15 +370,17 @@ function Create() {
           <Box width="45%">
             <FormControl fullWidth margin="normal" sx={{ marginLeft: '1rem' }}>
               <Box display="flex" alignItems="center">
-                <FormLabel sx={{ marginLeft: '1rem', marginRight: '1rem' }}>
-                  Schlagwoerter
-                </FormLabel>
-                <Input
-                  type="text"
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="Schlagwoerter"
+                  label="Schlagwoerter"
                   name="schlagwoerter"
+                  type="text"
                   value={schlagwoerter}
                   onChange={handleSchlagwoerterChange}
                   sx={{ marginBottom: '1rem' }}
+                  autoFocus
                 />
               </Box>
               {validationErrors.schlagwoerter.isValid === false && (
@@ -351,6 +388,24 @@ function Create() {
                   {validationErrors.schlagwoerter.message}
                 </Typography>
               )}
+            </FormControl>
+            <FormControl
+              fullWidth
+              sx={{ marginTop: '2rem', marginLeft: '1rem' }}
+            >
+              <InputLabel id="art-select-label">Art</InputLabel>
+              <Select
+                labelId="art-select-label"
+                id="art-select"
+                label="Art"
+                name="art"
+                value={formValues.art}
+                onChange={handleInputChange}
+                style={{ marginBottom: '1rem' }}
+              >
+                <MenuItem value={'DRUCKAUSGABE'}>DRUCKAUSGABE</MenuItem>
+                <MenuItem value={'KINDLE'}>KINDLE</MenuItem>
+              </Select>
             </FormControl>
             <FormControl
               fullWidth
@@ -409,24 +464,7 @@ function Create() {
                 />
               </Box>
             </FormControl>
-            <FormControl
-              fullWidth
-              sx={{ marginTop: '2rem', marginLeft: '2rem' }}
-            >
-              <InputLabel id="art-select-label">Art</InputLabel>
-              <Select
-                labelId="art-select-label"
-                id="art-select"
-                label="Art"
-                name="art"
-                value={formValues.art}
-                onChange={handleInputChange}
-                style={{ marginBottom: '1rem' }}
-              >
-                <MenuItem value={'DRUCKAUSGABE'}>DRUCKAUSGABE</MenuItem>
-                <MenuItem value={'KINDLE'}>KINDLE</MenuItem>
-              </Select>
-            </FormControl>
+
           </Box>
         </Box>
         <Box textAlign="center" marginTop="1rem" marginRight="1rem">
@@ -440,7 +478,7 @@ function Create() {
               Buch erstellen
             </Button>
           </Box>
-          <Dialog open={showPopup} onClose={() => setShowPopup(false)}>
+          <Dialog open={showPopupRef.current} onClose={resetForm}>
             <DialogTitle>Buch erstellt</DialogTitle>
             <DialogContent>
               <Typography>
@@ -454,8 +492,19 @@ function Create() {
               <Typography>ISBN: {formValues.lieferbar}</Typography>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => setShowPopup(false)} color="primary">
+              <Button onClick={resetForm} color="primary">
                 Schließen
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog open={errorInfo.showErrorDialog} onClose={hideErrorDialog}>
+            <DialogTitle>Error</DialogTitle>
+            <DialogContent>
+              <Typography>{errorInfo.errorMessage}</Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={hideErrorDialog} color="primary">
+                OK
               </Button>
             </DialogActions>
           </Dialog>

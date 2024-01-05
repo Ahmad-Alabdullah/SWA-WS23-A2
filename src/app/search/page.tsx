@@ -171,7 +171,7 @@ function Search() {
 
   return (
     <>
-      <Box paddingLeft="100px">
+      <Box paddingLeft="100px" paddingTop="30px" >
         <Grid
           container
           direction="row"

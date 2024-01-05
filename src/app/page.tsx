@@ -40,7 +40,7 @@ function Home() {
         left: 50,
         width: 'calc(100% - 50px)', // Korrektur: Leerzeichen hinzugefügt
         color: 'white',
-        paddingLeft: '80px',
+        paddingLeft: '130px',
       }}
     >
       <Grid container spacing={2}>

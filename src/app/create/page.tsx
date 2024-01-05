@@ -203,7 +203,7 @@ function Create() {
         } else if (
           response.data.errors &&
           response.data.errors[0].message ===
-            `Die ISBN ${formValues.isbn} existiert bereits`
+          `Die ISBN ${formValues.isbn} existiert bereits`
         ) {
           setValidation('isbn', false, 'Die ISBN existiert bereits');
           setValidation('bookCreated', false);
@@ -427,8 +427,8 @@ function Create() {
             <Button
               type="submit"
               variant="contained"
+              color="primary"
               onClick={handleSubmit}
-              style={{ backgroundColor: '#DC143C' }}
             >
               Buch erstellen
             </Button>

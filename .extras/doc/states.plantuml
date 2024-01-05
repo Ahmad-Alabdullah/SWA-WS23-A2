@@ -1,4 +1,4 @@
-@startuml bookSearch
+@startuml Buchhandel
 hide empty description
 
     [*] -left-> BuchAnlegen : Buch anlegen
